@@ -49,6 +49,16 @@ Page {
                 }
             }
         }
+        
+        Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("进入白板")
+            onClicked: {
+                if (router) {
+                    router.navigate("WhiteboardPage")
+                }
+            }
+        }
     }
 }
 

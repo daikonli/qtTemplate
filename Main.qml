@@ -9,6 +9,7 @@ ApplicationWindow {
     height: 480
     visible: true
     title: qsTr("Qt Quick App")
+    // visibility: Window.FullScreen
 
     // 路由管理器
     Router {

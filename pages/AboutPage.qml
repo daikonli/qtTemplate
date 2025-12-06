@@ -5,8 +5,9 @@ import "../components"
 Page {
     id: aboutPage
     
-    // 接收从 StackView 传递的 router 对象
+    // 接收从 StackView 传递的 router 对象和主窗口对象
     property var router: null
+    property var mainWindow: null
     
     title: qsTr("关于")
     

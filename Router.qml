@@ -9,6 +9,7 @@ Item {
     id: router
     
     property StackView stackView: null
+    property var mainWindow: null
     
     /**
      * 导航到指定页面
@@ -23,8 +24,9 @@ Item {
         
         var pagePath = "pages/" + pageName + ".qml"
         var pageProperties = properties || {}
-        // 确保每个页面都能访问 router
+        // 确保每个页面都能访问 router 和 mainWindow
         pageProperties.router = router
+        pageProperties.mainWindow = mainWindow
         stackView.push(pagePath, pageProperties)
     }
     
@@ -57,8 +59,9 @@ Item {
         
         var pagePath = "pages/" + pageName + ".qml"
         var pageProperties = properties || {}
-        // 确保每个页面都能访问 router
+        // 确保每个页面都能访问 router 和 mainWindow
         pageProperties.router = router
+        pageProperties.mainWindow = mainWindow
         stackView.replace(pagePath, pageProperties)
     }
 }

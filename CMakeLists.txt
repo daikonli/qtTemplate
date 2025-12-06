@@ -20,6 +20,8 @@ qt_add_qml_module(appqtTemplate
         Router.qml
         components/Card.qml
         components/whiteboard/ToolList.qml
+        components/whiteboard/Footer.qml
+        components/whiteboard/DrawingCanvas.qml
         pages/HomePage.qml
         pages/AboutPage.qml
         pages/SettingsPage.qml
@@ -34,6 +36,10 @@ qt_add_qml_module(appqtTemplate
         assets/icons/whiteboard/copy.svg
         assets/icons/whiteboard/scale.svg
         assets/icons/whiteboard/save.svg
+        assets/icons/whiteboard/folder.svg
+        assets/icons/whiteboard/login.svg
+        assets/icons/whiteboard/desktop.svg
+        assets/icons/whiteboard/settings.svg
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

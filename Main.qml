@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.15
 
 ApplicationWindow {
     id: window
-    width: 640
-    height: 480
+    width: 1440
+    height: 810
     visible: true
     title: qsTr("Qt Quick App")
     // visibility: Window.FullScreen
@@ -15,6 +15,7 @@ ApplicationWindow {
     Router {
         id: router
         stackView: stackView
+        mainWindow: window
     }
 
     // 主内容区域 - 使用 StackView 进行页面导航
@@ -23,8 +24,8 @@ ApplicationWindow {
         anchors.fill: parent
         
         Component.onCompleted: {
-            // 加载初始页面并传递 router 引用
-            push("pages/HomePage.qml", {"router": router})
+            // 加载初始页面并传递 router 和 mainWindow 引用
+            push("pages/HomePage.qml", {"router": router, "mainWindow": window})
         }
     }
 

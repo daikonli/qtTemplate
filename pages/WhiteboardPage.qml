@@ -1,109 +1,30 @@
 import QtQuick
 import QtQuick.Controls 2.15
+import QtQuick.Window
 import "../components"
 import "../components/whiteboard/"
 
 Page {
     id: whiteboardPage
     
-    // 接收从 StackView 传递的 router 对象
+    // 接收从 StackView 传递的 router 对象和主窗口对象
     property var router: null
+    property var mainWindow: null
     
     title: qsTr("白板")
     
-    header: ToolBar {
-        Row {
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
-            spacing: 10
-            
-            ToolButton {
-                text: "←"
-                font.pixelSize: 20
-                onClicked: {
-                    if (router) {
-                        router.goBack()
-                    }
-                }
-            }
-        }
-        
-        Label {
-            anchors.centerIn: parent
-            text: whiteboardPage.title
-            font.pixelSize: 18
-            font.bold: true
-        }
-    }
-    
-    // 白板画布区域 - 黑色背景
+    // 白板画布区域 - 深灰色背景
     Rectangle {
         id: canvas
         anchors.fill: parent
-        color: "#000000"
+        anchors.bottomMargin: 48  // 为底部 Footer 留出空间
+        color: "#242424"
         
-        Canvas {
+        // 绘制画布组件（支持压感笔锋）
+        DrawingCanvas {
             id: drawingCanvas
             anchors.fill: parent
             anchors.rightMargin: 48  // 为右侧工具栏留出空间
-            
-            property bool drawing: false
-            property point lastPoint: Qt.point(0, 0)
-            property var paths: []
-            
-            onPaint: {
-                var ctx = getContext("2d")
-                ctx.fillStyle = "#000000"
-                ctx.fillRect(0, 0, width, height)
-                
-                ctx.strokeStyle = "#FFFFFF"
-                ctx.lineWidth = 3
-                ctx.lineCap = "round"
-                ctx.lineJoin = "round"
-                
-                // 绘制所有路径
-                for (var i = 0; i < paths.length; i++) {
-                    var path = paths[i]
-                    if (path.length > 0) {
-                        ctx.beginPath()
-                        ctx.moveTo(path[0].x, path[0].y)
-                        for (var j = 1; j < path.length; j++) {
-                            ctx.lineTo(path[j].x, path[j].y)
-                        }
-                        ctx.stroke()
-                    }
-                }
-            }
-            
-            MouseArea {
-                anchors.fill: parent
-                
-                onPressed: {
-                    drawingCanvas.drawing = true
-                    drawingCanvas.lastPoint = Qt.point(mouse.x, mouse.y)
-                    var newPath = [Qt.point(mouse.x, mouse.y)]
-                    drawingCanvas.paths.push(newPath)
-                }
-                
-                onPositionChanged: {
-                    if (drawingCanvas.drawing && drawingCanvas.paths.length > 0) {
-                        var currentPath = drawingCanvas.paths[drawingCanvas.paths.length - 1]
-                        currentPath.push(Qt.point(mouse.x, mouse.y))
-                        drawingCanvas.requestPaint()
-                    }
-                }
-                
-                onReleased: {
-                    drawingCanvas.drawing = false
-                }
-            }
-            
-            // 清除画布功能
-            function clearCanvas() {
-                paths = []
-                requestPaint()
-            }
         }
         
         // 右侧工具栏
@@ -155,6 +76,52 @@ Page {
             onSave: {
                 console.log("保存白板")
                 // TODO: 实现保存功能
+            }
+        }
+    }
+    
+    // 底部 Footer
+    Footer {
+        id: footer
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        
+        onFolderClicked: {
+            console.log("文件夹按钮被点击")
+            // TODO: 实现文件夹功能
+        }
+        
+        onLoginClicked: {
+            console.log("登录按钮被点击")
+            // TODO: 实现登录功能
+        }
+        
+        onDesktopClicked: {
+            console.log("桌面按钮被点击")
+            // 最小化窗口，回到桌面
+            if (mainWindow) {
+                if (typeof mainWindow.showMinimized === "function") {
+                    mainWindow.showMinimized()
+                } else if (mainWindow.hasOwnProperty("visibility")) {
+                    mainWindow.visibility = Window.Minimized
+                } else {
+                    console.log("无法最小化窗口：窗口对象不支持最小化操作")
+                }
+            } else {
+                console.log("无法最小化窗口：未找到主窗口对象")
+            }
+        }
+        
+        onSettingsClicked: {
+            console.log("设置按钮被点击")
+            // TODO: 实现设置功能
+        }
+        
+        onCloseClicked: {
+            console.log("关闭板书按钮被点击")
+            if (router) {
+                router.goBack()
             }
         }
     }
